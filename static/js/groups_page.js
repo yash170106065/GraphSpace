@@ -39,6 +39,17 @@ var apis = {
         deleteMember: function (group_id, member_id, successCallback, errorCallback) {
             apis.jsonRequest('DELETE', apis.groups.ENDPOINT + group_id + '/members/' + member_id, undefined, successCallback, errorCallback)
         }
+        
+    },
+    discussion: {
+        ENDPOINT: '/ajax/groups/',
+        add: function (id, data, successCallback, errorCallback) {
+            console.log("gogo")
+            apis.jsonRequest('POST', apis.groups.ENDPOINT + id + '/discussions', data, successCallback, errorCallback)
+        },
+        getSharedDiscussions: function (id, data, successCallback, errorCallback) {
+            apis.jsonRequest('GET', apis.groups.ENDPOINT + id + '/discussions', data, successCallback, errorCallback)
+        },
     },
     jsonRequest: function (method, url, data, successCallback, errorCallback) {
         $.ajax({
@@ -266,6 +277,7 @@ var groupPage = {
         });
 
         $('#UpdateGroupBtn').click(groupPage.updateGroupForm.submit);
+        $('#CreateDiscussionBtn').click(groupPage.createDiscussionForm.submit);
         $('#ConfirmRemoveGroupToGraphBtn').click(groupPage.SharedGraphsTable.onRemoveGroupToGraphConfirm);
         $('#ConfirmRemoveGroupMemberBtn').click(groupPage.GroupMembersTable.onRemoveGroupMemberConfirm);
         $('#submitNewGroupMemberEmailBtn').click(groupPage.onAddGroupMember);
@@ -346,6 +358,54 @@ var groupPage = {
                 });
         }
     },
+    createDiscussionForm: {
+        submit: function (e) {
+            e.preventDefault();
+
+             $('#CreateDiscussionBtn').attr('disabled', true);
+            console.log("jafdfdfdf")
+            var discussion = {
+                "message": $("#GroupDiscussionMessage").val() == "" ? undefined : $("#GroupDiscussionMessage").val(),
+                "description": $("#GroupDiscussionDescription").val() == "" ? undefined : $("#GroupDiscussionDescription").val(),
+                "owner_email": $('#UserEmail').val(),
+                "group_id": $('#GroupID').val()                
+            };
+            console.log($('#GroupID').val())
+            if (!discussion['message']) {
+                $('#CreateDiscussionBtn').attr('disabled', false);
+                $.notify({
+                    message: 'Please enter in a valid group name!'
+                }, {
+                    type: 'warning'
+                });
+                return;
+            }
+
+            apis.discussion.add($('#GroupID').val(), discussion,
+                successCallback = function (response) {
+                    // This method is called when group is successfully added.
+                    window.location = location.pathname;
+                },
+                errorCallback = function (xhr, status, errorThrown) {
+                    // This method is called when  error occurs while adding group.
+                    if(xhr.responseJSON.error_message.includes('duplicate key')) {
+                        $.notify({
+                            message: 'Group name ' + discussion['message'] + ' already exists!'
+                        }, {
+                            type: 'danger'
+                        });
+                    }
+                    else {
+                        $.notify({
+                            message: xhr.responseText
+                        }, {
+                            type: 'danger'
+                        });
+                    }
+                    $('#CreateDiscussionBtn').attr('disabled', false);
+                });
+        }
+    },
     SharedGraphsTable: {
         visibilityFormatter: function (value, row) {
             if (row.is_public === 1) {
@@ -400,6 +460,71 @@ var groupPage = {
             }
 
             apis.groups.getSharedGraphs($('#GroupID').val(), params.data,
+                successCallback = function (response) {
+                    // This method is called when groups are successfully fetched.
+                    params.success(response);
+                },
+                errorCallback = function () {
+                    // This method is called when  error occurs while fetching groups.
+                    params.error('Error');
+                }
+            );
+        }
+    },
+    SharedDiscussionsTable: {
+        // visibilityFormatter: function (value, row) {
+        //     if (row.is_public === 1) {
+        //         return "<i class='fa fa-globe fa-lg'></i> Public";
+        //     } else {
+        //         return "<i class='fa fa-lock fa-lg'></i> Private";
+        //     }
+        // },
+        nameFormatter: function (value, row) {
+            return $('<a>').attr('href', '/graphs/').text(str(row.id))[0].outerHTML;
+        },
+        // operationsFormatter: function (value, row, index) {
+        //     return [
+        //         '<a class="remove btn btn-default btn-sm" href="javascript:void(0)" title="Remove">',
+        //         'Unshare <i class="glyphicon glyphicon-remove"></i>',
+        //         '</a>'
+        //     ].join('');
+        // },
+        // operationEvents: {
+        //     'click .remove': function (e, value, row, index) {
+        //         $('#deleteGroupToGraphModal').data('id', row.id).modal('show');
+        //     }
+        // },
+        // onRemoveGroupToGraphConfirm: function (e) {
+        //     e.preventDefault();
+        //     apis.groups.unshareGraph($('#GroupID').val(), $('#deleteGroupToGraphModal').data('id'),
+        //         successCallback = function (response) {
+        //             // This method is called when group_to_graph relationship is successfully deleted.
+        //             // The entry from the table is deleted.
+        //             $('#SharedGraphsTable').bootstrapTable('remove', {
+        //                 field: 'id',
+        //                 values: [$('#deleteGroupToGraphModal').data('id')]
+        //             });
+        //             $('#deleteGroupToGraphModal').modal('hide');
+        //         },
+        //         errorCallback = function (xhr, status, errorThrown) {
+        //             // This method is called when  error occurs while deleting group_to_graph relationship.
+        //             alert(xhr.responseText);
+        //         });
+        // },
+        getDiscussionsSharedToGroup: function (params) {
+            /**
+             * This is the custom ajax request used to load graphs in SharedGraphsTable.
+             *
+             * params - query parameters for the ajax request.
+             *          It contains parameters like limit, offset, search, sort, order.
+             */
+
+            if (params.data["search"]) {
+                // Currently we assume that term entered in the search bar is used to search for the graph name only.
+                params.data["names"] = '%' + params.data["search"] + '%';
+            }
+
+            apis.discussion.getSharedDiscussions($('#GroupID').val(), $('#GroupID').val(),
                 successCallback = function (response) {
                     // This method is called when groups are successfully fetched.
                     params.success(response);

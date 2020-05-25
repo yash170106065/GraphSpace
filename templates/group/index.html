@@ -14,6 +14,12 @@
             <li class="text-center">
                 <a href="#members" data-toggle="tab">{{ group.total_members }} Members</a>
             </li>
+            <li class="text-center">
+                <a href="#discussions" data-toggle="tab">Discussions</a>
+            </li>
+            <li class="text-center">
+                <a href="#add_discussion" data-toggle="tab">Add Discussions</a>
+            </li>
             {% if group.owner_email == uid %}
             <li class="text-center">
                 <a href="#update_group" data-toggle="tab">Update Group</a>
@@ -44,6 +50,12 @@
                     </div>
                     {% endif %}
                 </div>
+            </div>
+            <div class="tab-pane fade" id="discussions">
+                {% include 'group/discussions_table.html' %}
+            </div>
+            <div class="tab-pane fade" id="add_discussion">
+                {% include 'group/add_discussion.html' %}
             </div>
 
             <div class="tab-pane fade" id="update_group">

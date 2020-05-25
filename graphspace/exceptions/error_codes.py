@@ -43,3 +43,10 @@ class ErrorCodes(object):
 	CannotReplyToResolvedComment = (1019, "You cannot reply to resolved comment")
 	UserCannotPinThisComment = (1020, "You cannot pin this comment")
 	UserCannotUnpinThisComment = (1021, "You cannot unpin this comment")
+
+    # Discussions API
+    UserNotAuthorizedToCreateDiscussion = (1022, "Please create an account or login to create a discussion on this graph.")
+    UserNotAuthorizedToUpdateDiscussion = (1023, "You do not have permission to update this discussion.")
+    UserNotAuthorizedToDeleteDiscussion = (1024, "You do not have permission to delete this discussion.")
+    ParentDiscussionDoesNotExist = (1025, "You cannot reply to discussions which do not exist")
+    CannotReplyToResolvedDiscussion = (1026, "You cannot reply to resolved discussion")

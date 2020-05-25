@@ -40,7 +40,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'comment_sys',
+        'NAME': 'for_work',
         'USER': 'yash',
         'PASSWORD': '12345',
         'HOST': 'localhost',
