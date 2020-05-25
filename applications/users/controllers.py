@@ -2,7 +2,7 @@ import bcrypt
 
 from django.conf import settings
 from django.core.mail import send_mail
-
+import applications.discussions as discussions
 import applications.graphs as graphs
 import applications.users.dal as db
 from graphspace.exceptions import BadRequest, ErrorCodes
@@ -269,7 +269,7 @@ def delete_group_member(request, group_id, member_id):
 
 def search_group_graphs(request, group_id, owner_email, names=None, nodes=None, edges=None, limit=20, offset=0):
 	total, group_graphs = graphs.controllers.search_graphs_by_group_ids(request,
-						group_ids=[group_id],
+						group_ids=group_id,
 						owner_email=owner_email,
 						names=names,
 						nodes=nodes,
@@ -277,6 +277,13 @@ def search_group_graphs(request, group_id, owner_email, names=None, nodes=None, 
 						limit=limit,
 						offset=offset)
 	return total, group_graphs
+def search_group_discussions(request, group_id, owner_email, limit=20, offset=0):
+	total, group_discussions = discussions.controllers.search_discussions_by_group_id(request,
+						group_id=group_id,
+						owner_email=owner_email,
+						limit=limit,
+						offset=offset)
+	return total, group_discussions
 
 
 def add_group_graph(request, group_id, graph_id):

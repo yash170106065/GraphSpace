@@ -5,7 +5,6 @@ urlpatterns = [
 
 	url(r'^groups/$', views.groups_page, name='groups'),
 	url(r'^groups/(?P<group_id>[^/]+)$', views.group_page, name='group'),
-
 	url(r'^groups/(?P<group_id>[^/]+)/join/$', views.join_group_page, name='signup_by_invitation'),
 
 	# AJAX APIs Endpoints
@@ -22,7 +21,9 @@ urlpatterns = [
 	# Group Graphs
 	url(r'^ajax/groups/(?P<group_id>[^/]+)/graphs$', views.group_graphs_ajax_api, name='group_graphs_ajax_api'),
 	url(r'^ajax/groups/(?P<group_id>[^/]+)/graphs/(?P<graph_id>[^/]+)$', views.group_graphs_ajax_api, name='group_graphs_ajax_api'),
-
+	# Group Discussions
+	url(r'^ajax/groups/(?P<group_id>[^/]+)/discussions$', views.group_discussions_ajax_api, name='group_discussions_ajax_api'),
+	url(r'^ajax/groups/(?P<group_id>[^/]+)/discussions/(?P<discussion_id>[^/]+)$', views.group_discussions_ajax_api, name='group_discussions_ajax_api'),
 	# REST APIs Endpoints
 
 	# Groups
