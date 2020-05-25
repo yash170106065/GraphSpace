@@ -35,7 +35,6 @@ INSTALLED_APPS = (
 	'applications.users',
 	'applications.graphs',
 	'applications.comments',
-	'applications.discussions',
 	'channels'
 )
 
