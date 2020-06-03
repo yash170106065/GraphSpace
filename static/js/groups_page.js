@@ -472,45 +472,46 @@ var groupPage = {
         }
     },
     SharedDiscussionsTable: {
-        // visibilityFormatter: function (value, row) {
-        //     if (row.is_public === 1) {
-        //         return "<i class='fa fa-globe fa-lg'></i> Public";
-        //     } else {
-        //         return "<i class='fa fa-lock fa-lg'></i> Private";
-        //     }
-        // },
-        nameFormatter: function (value, row) {
-            return $('<a>').attr('href', '/graphs/').text(str(row.id))[0].outerHTML;
+        visibilityFormatter: function (value, row) {
+            if (row.is_resolved === 1) {
+                return "<i class='fa fa-lock'></i> Closed";
+            } else {
+                return "<i class='fa fa-unlock'></i> Open";
+            }
         },
-        // operationsFormatter: function (value, row, index) {
-        //     return [
-        //         '<a class="remove btn btn-default btn-sm" href="javascript:void(0)" title="Remove">',
-        //         'Unshare <i class="glyphicon glyphicon-remove"></i>',
-        //         '</a>'
-        //     ].join('');
-        // },
-        // operationEvents: {
-        //     'click .remove': function (e, value, row, index) {
-        //         $('#deleteGroupToGraphModal').data('id', row.id).modal('show');
-        //     }
-        // },
-        // onRemoveGroupToGraphConfirm: function (e) {
-        //     e.preventDefault();
-        //     apis.groups.unshareGraph($('#GroupID').val(), $('#deleteGroupToGraphModal').data('id'),
-        //         successCallback = function (response) {
-        //             // This method is called when group_to_graph relationship is successfully deleted.
-        //             // The entry from the table is deleted.
-        //             $('#SharedGraphsTable').bootstrapTable('remove', {
-        //                 field: 'id',
-        //                 values: [$('#deleteGroupToGraphModal').data('id')]
-        //             });
-        //             $('#deleteGroupToGraphModal').modal('hide');
-        //         },
-        //         errorCallback = function (xhr, status, errorThrown) {
-        //             // This method is called when  error occurs while deleting group_to_graph relationship.
-        //             alert(xhr.responseText);
-        //         });
-        // },
+        nameFormatter: function (value, row) {
+            console.log("dvdfve")
+            return $('<a>').attr('href', '/discussions/' + row.id).text('#'+row.id)[0].outerHTML;
+        },
+        operationsFormatter: function (value, row, index) {
+            return [
+                '<a class="remove btn btn-default btn-sm" href="javascript:void(0)" title="Remove">',
+                'Unshare <i class="glyphicon glyphicon-remove"></i>',
+                '</a>'
+            ].join('');
+        },
+        operationEvents: {
+            'click .remove': function (e, value, row, index) {
+                $('#deleteGroupToGraphModal').data('id', row.id).modal('show');
+            }
+        },
+        onRemoveGroupToGraphConfirm: function (e) {
+            e.preventDefault();
+            apis.groups.unshareGraph($('#GroupID').val(), $('#deleteGroupToGraphModal').data('id'),
+                successCallback = function (response) {
+                    // This method is called when group_to_graph relationship is successfully deleted.
+                    // The entry from the table is deleted.
+                    $('#SharedGraphsTable').bootstrapTable('remove', {
+                        field: 'id',
+                        values: [$('#deleteGroupToGraphModal').data('id')]
+                    });
+                    $('#deleteGroupToGraphModal').modal('hide');
+                },
+                errorCallback = function (xhr, status, errorThrown) {
+                    // This method is called when  error occurs while deleting group_to_graph relationship.
+                    alert(xhr.responseText);
+                });
+        },
         getDiscussionsSharedToGroup: function (params) {
             /**
              * This is the custom ajax request used to load graphs in SharedGraphsTable.

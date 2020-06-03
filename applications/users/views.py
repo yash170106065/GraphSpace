@@ -14,6 +14,12 @@ from graphspace.utils import get_request_user
 
 
 @is_authenticated(redirect_url='/')
+
+def discussion_page(request, discussions_id):
+    return render(request, 'discussion/index.html')
+
+
+
 def groups_page(request):
     """
 		Wrapper view for the groups page.

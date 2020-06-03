@@ -6,18 +6,29 @@
        data-ajax="groupPage.SharedDiscussionsTable.getDiscussionsSharedToGroup"
        data-search="true"
        data-side-pagination="server"
-       data-data-field="graphs"
+       data-data-field="discussions"
        data-pagination="true"
        data-sort-name="name"
        data-id-field="id"
        data-sort-order="asc">
     <thead>
     <tr>
-        <th data-field="name" data-sortable="True" data-formatter="groupPage.SharedDiscussionsTable.nameFormatter">Graph
-            Name
+        <th data-field="id" data-sortable="True" data-formatter="groupPage.SharedDiscussionsTable.nameFormatter">Discussion ID
         </th>
-<!--         <th data-field="owner_email" data-sortable="True">Graph Owner</th>
-        <th data-field="is_public" data-formatter="groupPage.SharedGraphsTable.visibilityFormatter"
+        <th data-field="description" data-sortable="True">Discription</th>
+        <th data-field="owner_email" data-sortable="True">Discussion Owner</th>
+        <th data-field="updated_at" data-formatter="utils.dateFormatter" data-sortable="True">Last Modified</th>
+        <th data-field="is_resolved" data-formatter="groupPage.SharedDiscussionsTable.visibilityFormatter"
+            data-sortable="True">Status
+        </th>
+        {% if group.owner_email == uid %}
+            <th data-field="operations"
+                data-formatter="groupPage.SharedGraphsTable.operationsFormatter"
+                data-events="groupPage.SharedGraphsTable.operationEvents">
+                Remove
+            </th>
+        {% endif %}
+ <!--        <th data-field="is_public" data-formatter="groupPage.SharedGraphsTable.visibilityFormatter"
             data-sortable="True">Visibility
         </th>
         <th data-field="updated_at" data-formatter="utils.dateFormatter" data-sortable="True">Last Modified</th>
