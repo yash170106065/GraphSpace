@@ -87,10 +87,11 @@ class Group(IDMixin, TimeStampMixin, Base):
 	invite_code = Column(String, nullable=False)
 
 	owner = relationship("User", back_populates="owned_groups", uselist=False)
-	discussions = relationship("Discussion", back_populates="group", cascade="all, delete-orphan")
+	group_discussions = relationship("Discussion", back_populates="group", cascade="all, delete-orphan")
 	members = association_proxy('member_users', 'user')
 	graphs = association_proxy('shared_graphs', 'graph')
-
+	# discussions = association_proxy('group_discussions', 'discussion')
+	# discussions = association_proxy('group_discussions', 'discussion')
 	constraints = (UniqueConstraint('name', 'owner_email', name='_group_uc_name_owner_email'),)
 	indices = ()
 
@@ -106,6 +107,7 @@ class Group(IDMixin, TimeStampMixin, Base):
 			'invite_code': cls.invite_code,
 			'owner_email': cls.owner_email,
 			'description': cls.description,
+			'total_discussions': len(cls.group_discussions),
 			'total_graphs': len(cls.graphs),
 			'total_members': len(cls.members),
 			'created_at': cls.created_at.isoformat(),

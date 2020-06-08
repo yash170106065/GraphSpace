@@ -115,10 +115,13 @@
         },
         onmessage: function(message) {
             data = JSON.parse(message.data);
+            console.log(data);
             // Different types of communication over sockets
             switch (data.type) {
                 case "comment":
                     userSocket.comments(data);
+                    console.log("Cdcdsc");
+
                     break;
             }
         },
@@ -126,10 +129,10 @@
         comments: function(data) {
             var graph_id = ($('#GraphID').val())? parseInt($('#GraphID').val()) : null;
             var is_event = false;
-            if(graph_id === null || graph_id !== data.message.graph_id) {
-                //the user did not open the graph page of the required graph.
-                return;
-            }
+            // if(graph_id === null || graph_id !== data.message.graph_id) {
+            //     //the user did not open the graph page of the required graph.
+            //     return;
+            // }
             if(data.event === "insert") {
                 userSocket.addcomment(data.message);
                 is_event = true;
@@ -150,26 +153,30 @@
                 userSocket.unpincomment(data.message);
                 is_event = true;
             }
-            if(is_event) {
-                userSocket.resetCommentsPage();
-            }
+            // if(is_event) {
+            //     userSocket.resetCommentsPage();
+            // }
         },
         addcomment: function(comment) {
             var str = "";
-            if(comment.parent_comment_id != null) {
+            var ele = $('#commentsList');
+            if(comment.parent_discussion_id == null) {
                 str += graphPage.generateCommentTemplate(comment);
-                $(str).insertBefore($("#commentContainer" + comment.parent_comment_id).find('.reply-message'));
+                $(str).insertBefore($("#commentContainer" + comment.parent_discussion_id).find('.reply-message'));
                 $('#commentContainer' + comment.parent_comment_id).find('.reply-table').addClass('passive');
-            }
-            if(comment.parent_comment_id == null) {
-                var ele = $('#commentsList');
-                var str = "";
-                str += '<div class="list-group comment-box" id="commentContainer' + comment.id + '">';
-                str += '<a class="list-group-item comment-highlight">';
-                str += graphPage.generateCommentTemplate(comment);
-                str += graphPage.generateReplyTemplate(comment) + '</a></div>';
+                console.log("pta nhi");
                 ele.append(str);
+
             }
+            // if(comment.parent_comment_id == null) {
+            //     var ele = $('#commentsList');
+            //     var str = "";
+            //     str += '<div class="list-group comment-box" id="commentContainer' + comment.id + '">';
+            //     str += '<a class="list-group-item comment-highlight">';
+            //     str += graphPage.generateCommentTemplate(comment);
+            //     str += graphPage.generateReplyTemplate(comment) + '</a></div>';
+            //     ele.append(str);
+            // }
             graphPage.addCommentHandlers(comment);
         },
         updatecomment: function(comment) {

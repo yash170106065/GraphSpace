@@ -981,26 +981,33 @@ var graphPage = {
       str += '<div class="dropdown">';
       str += '<button type="button" class="btn comment-options" data-toggle="dropdown">';
       str += '<i class="fa comment-symbol">&#xf142;</i>';
-      str += '</button><div class="dropdown-menu">';
+      str += '</button><div class="dropdown-menu pull-right">';
       if($('#UserEmail').val() === comment.owner_email) {
           str += '<a class="dropdown-item edit-comment">Edit</a>';
+          str +='<br>';
           if(comment.parent_comment_id === null && comment.is_resolved === 0) {
               str += '<a class="dropdown-item resolve-comment">Resolve</a>';
+              str +='<br>';
           }
           str += '<a class="dropdown-item delete-comment">Delete</a>';
+          str +='<br>';
       }
       else if($('#UserEmail').val() === comment.graph_owner_email) {
           str += '<a class="dropdown-item delete-comment">Delete</a>';
+          str +='<br>';
       }
       if(comment.parent_comment_id === null) {
           if(comment.is_resolved === 1) {
               str += '<a class="dropdown-item reopen-comment">Re-open</a>';
+              str +='<br>';
           }
           if(comment.is_pinned === 0 || comment.is_pinned === undefined) {
               str += '<a class="dropdown-item pin-comment">Pin</a>';
+              str +='<br>';
           }
           else {
               str += '<a class="dropdown-item unpin-comment">Unpin</a>';
+              str +='<br>';
           }
       }
       str += '</div></div>';

@@ -40,7 +40,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'for_work',
+        'NAME': 'rel',
         'USER': 'yash',
         'PASSWORD': '12345',
         'HOST': 'localhost',

@@ -337,7 +337,7 @@ def get_pinned_comments(db_session, comment_id, owner_email):
 
 # @event.listens_for(Comment, 'after_insert')
 # def insert_listener(mapper, connection, comment):
-	# send_comment(comment, event="insert")
+# 	send_comment(comment, event="insert")
 
 @event.listens_for(Comment, 'after_update')
 def update_listener(mapper, connection, comment):

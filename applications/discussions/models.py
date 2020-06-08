@@ -22,11 +22,11 @@ class Discussion(IDMixin, TimeStampMixin, Base):
     owner = relationship("User", back_populates="owned_discussions", uselist=False)
 
     group_id = Column(Integer, ForeignKey('group.id', ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
-    group = relationship("Group", foreign_keys=[group_id], back_populates="discussions", uselist=False)
+    group = relationship("Group", back_populates="group_discussions", uselist=False)
 
     parent_discussion_id = Column(Integer, ForeignKey('discussion.id', ondelete="CASCADE", onupdate="CASCADE"),
                                   nullable=True)
-
+    # groups = association_proxy('discussions_with_groups', 'group')
     constraints = ()
     indices = ()
 
@@ -48,3 +48,30 @@ class Discussion(IDMixin, TimeStampMixin, Base):
             'created_at': cls.created_at.isoformat(),
             'updated_at': cls.updated_at.isoformat()
         }
+
+
+# class GroupToDiscussion(TimeStampMixin, Base):
+#     __tablename__ = 'group_to_discussion'
+#
+#     discussion_id = Column(Integer, ForeignKey('discussion.id', ondelete="CASCADE", onupdate="CASCADE"),
+#                            primary_key=True)
+#     group_id = Column(Integer, ForeignKey('group.id', ondelete="CASCADE", onupdate="CASCADE"), primary_key=True)
+#
+#     discussion = relationship("Discussion", backref=backref("discussions_with_groups", cascade="all, delete-orphan"))
+#     group = relationship("Group", backref=backref("group_discussions", cascade="all, delete-orphan"))
+#
+#     indices = (Index('group2discussion_idx_discussion_id_group_id', 'discussion_id', 'group_id'),)
+#     constraints = ()
+#
+#     @declared_attr
+#     def __table_args__(cls):
+#         args = cls.constraints + cls.indices
+#         return args
+#
+#     def serialize(cls, **kwargs):
+#         return {
+#             'group_id': cls.group_id,
+#             'discussion_id': cls.discussion_id,
+#             'created_at': cls.created_at.isoformat(),
+#             'updated_at': cls.updated_at.isoformat()
+#         }

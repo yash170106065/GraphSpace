@@ -15,7 +15,7 @@ from graphspace.utils import get_request_user
 
 @is_authenticated(redirect_url='/')
 
-def discussion_page(request, discussions_id):
+def discussion_page(request, group_id, discussions_id):
     return render(request, 'discussion/index.html')
 
 
