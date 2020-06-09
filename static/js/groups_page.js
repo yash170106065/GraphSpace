@@ -217,7 +217,6 @@ var groupsPage = {
         }
     }
 };
-    var grou =$('#GroupID').val();
 
 var groupPage = {
     init: function () {
@@ -666,13 +665,11 @@ var joinGroupPage = {
 
     var graphPage={
         presentDiscussions: null,
-        init: function(){
-
-
+        init: function(){ 
             console.log("welcome");
             var testd
             console.log(groupPage.group_id);
-            apis.discussion.getSharedDiscussions($('#GroupID').val(), $('#GroupID').val(),
+            apis.discussion.getSharedDiscussions(2, 2,
                 successCallback = function (response) {
                     // This method is called when groups are successfully fetched.
 

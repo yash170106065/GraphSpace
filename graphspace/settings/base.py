@@ -25,18 +25,18 @@ DB_FULL_PATH = os.path.join(BASE_DIR, 'graphspace.db')
 # Application definition
 
 INSTALLED_APPS = (
-	'analytical',
-	'django.contrib.admin',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.messages',
-	'django.contrib.staticfiles',
-	'applications.users',
-	'applications.graphs',
-	'applications.comments',
+    'analytical',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'applications.users',
+    'applications.graphs',
+    'applications.comments',
     'applications.discussions',
-	'channels'
+    'channels'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -123,7 +123,6 @@ TEMPLATES = [
     },
 ]
 
-
 LOGIN_REDIRECT_URL = '/'
 
 # for authentication. Since we need to use SQL Alchemy for the ORM, we cannot use the authentication backend automatically provided by Django when using the Django ORM.
@@ -162,9 +161,6 @@ LOGGING = {
     },
 }
 
-
-
-
 # Channel settings and routing
 CHANNEL_LAYERS = {
     'default': {
@@ -176,4 +172,3 @@ CHANNEL_LAYERS = {
     }
 }
 MAINTENANCE = False
-
