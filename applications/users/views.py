@@ -16,8 +16,25 @@ from graphspace.utils import get_request_user
 @is_authenticated(redirect_url='/')
 
 def discussion_page(request, group_id, discussions_id):
-    return render(request, 'discussion/index.html')
 
+	"""
+		Wrapper view for the group page. /groups/<group_id>
+
+		:param request: HTTP GET Request.
+
+	Parameters
+	----------
+	group_id : string
+		Unique ID of the group. Required
+	"""
+	if 'GET' == request.method:
+		context = RequestContext(request, {})
+		context.push({
+			"discussion": discussions._get_discussion(request, int(discussions_id)),
+		})
+		return render(request, 'discussion/index.html', context)
+	else:
+		raise MethodNotAllowed(request)  # Handle other type of request methods like POST, PUT, UPDATE.
 
 
 def groups_page(request):

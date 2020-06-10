@@ -52,6 +52,16 @@ def get_user_emails_by_group_id(db_session, group_id):
 	query = query.filter(User.id == GroupToUser.user_id)
 	return query.all()
 
+@with_session
+def get_discussion(db_session, id):
+	"""
+	Get group by group id.
+	:param db_session: Database session.
+	:param id: Unique ID of the group
+	:return: Group if id exists else None
+	"""
+	return db_session.query(Discussion).filter(Discussion.id == id).one_or_none()
+
 @event.listens_for(Discussion, 'after_insert')
 def update_listener(mapper, connection, discussion):
 	send_discussion(discussion, event="insert")
